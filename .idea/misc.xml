@@ -3,4 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="uv (python-showcase)" />
   </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="uv (python-showcase)" project-jdk-type="Python SDK" />
 </project>
