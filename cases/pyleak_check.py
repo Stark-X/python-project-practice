@@ -1,6 +1,5 @@
 import asyncio
 import time
-from typing import Never
 
 from pyleak import no_event_loop_blocking, no_task_leaks, no_thread_leaks
 from pyleak.base import LeakAction
