@@ -1,4 +1,62 @@
-## cases
+from functools import lru_cache
+
+# Python 项目的实践
+
+## 代码例子
+
+打开 [jupyter notebook](./main.ipynb) 查看
+
+## 依赖注入
+
+- 功能解耦
+- 实现依赖缓存，避免重复创建、销毁资源
+- 功能 接口/基类 注入，符合里氏替换原则
+- 方便测试、替换实现
+
+fastapi 提供了依赖注入能力 [依赖项](https://fastapi.tiangolo.com/zh/tutorial/dependencies/#_3)
+
+```python
+from abc import ABCMeta, abstractmethod
+from functools import lru_cache
+
+from app import router
+from fastapi import Depends
+
+
+class Interface(metaclass=ABCMeta):
+    @abstractmethod
+    def do_something(self) -> str:
+        pass
+
+
+class FooService(Interface):
+    def do_something(self) -> str:
+        # call others api code here
+        return "do something real"
+
+
+@lru_cache
+def get_foo_service() -> FooService:
+    return FooService()
+
+
+@router.get("/api/v1/test")
+def some_test(svc: Interface = Depends(get_foo_service)):
+    svc.do_something()
+
+
+class MockedFoo(Interface):
+    """won't call another api implementation"""
+
+    def do_something(self) -> str:
+        return "do something fake"
+
+
+##### pytest case ####
+def test_some_test():
+    actual = some_test(MockedFoo())
+    assert actual == "do something fake"
+```
 
 ## reformat && lint
 
