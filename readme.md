@@ -1,5 +1,3 @@
-from functools import lru_cache
-
 # Python 项目的实践
 
 ## 代码例子
